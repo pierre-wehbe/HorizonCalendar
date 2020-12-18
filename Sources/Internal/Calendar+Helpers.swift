@@ -111,7 +111,7 @@ extension Calendar {
 
 // MARK: Day of Week Helpers
 
-extension Calendar {
+public extension Calendar {
 
   func dayOfWeekPosition(for date: Date) -> DayOfWeekPosition {
     let weekdayComponent = component(.weekday, from: date)

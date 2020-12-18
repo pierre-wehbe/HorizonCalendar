@@ -46,7 +46,13 @@ final class FrameProvider {
     let numberOfDaysPerWeek = CGFloat(7)
     let availableWidth = insetWidth - (content.horizontalDayMargin * (numberOfDaysPerWeek - 1))
     let points = availableWidth / numberOfDaysPerWeek
-    daySize = CGSize(width: points, height: points)
+    let contentSide = min(50, 0.8 * (UIScreen.main.bounds.width - 2 * 8.0) / 7.0)
+    let separatorHeight: CGFloat = 2.0
+    let stackSepatatorLine: CGFloat = 10.0
+    let stackSepatatorCalendarButton: CGFloat = 8.0
+    let labelSize = UIFont.systemFont(ofSize: 12, weight: .regular).lineHeight + 6.0 // extra height
+    let height = separatorHeight + stackSepatatorLine + labelSize + stackSepatatorCalendarButton + contentSide
+    daySize = CGSize(width: points, height: height)
 
     validateCalendarMetrics(size: size)
   }
@@ -209,11 +215,12 @@ final class FrameProvider {
     -> CGRect
   {
     let x = minXOfItem(at: dayOfWeekPosition, minXOfContainingRow: layoutMargins.leading)
-    return CGRect(origin: CGPoint(x: x, y: yContentOffset), size: daySize)
+    return CGRect(origin: CGPoint(x: x, y: yContentOffset), size: .init(width: daySize.width, height: customHeightOfPinnedHeader))
   }
-
+    
+  let customHeightOfPinnedHeader: CGFloat = 30
   func frameOfPinnedDaysOfWeekRowBackground(yContentOffset: CGFloat) -> CGRect {
-    CGRect(x: layoutMargins.leading, y: yContentOffset, width: monthWidth, height: daySize.height)
+    CGRect(x: layoutMargins.leading, y: yContentOffset, width: monthWidth, height: customHeightOfPinnedHeader) // daySize.height
   }
 
   func frameOfPinnedDaysOfWeekRowSeparator(
@@ -223,7 +230,7 @@ final class FrameProvider {
   {
     CGRect(
       x: layoutMargins.leading,
-      y: yContentOffset + daySize.height - separatorHeight,
+      y: yContentOffset - separatorHeight + customHeightOfPinnedHeader, // + daySize.height // want custom
       width: monthWidth,
       height: separatorHeight)
   }
