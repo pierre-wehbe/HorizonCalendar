@@ -549,6 +549,7 @@ public final class CalendarView: UIView {
       visibleItems,
       viewHandler: { view, visibleItem, previousBackingVisibleItem in
         if view.superview == nil {
+//            view.translatesAutoresizingMaskIntoConstraints = false
           scrollView.addSubview(view)
         }
 
